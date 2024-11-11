@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naruto Characters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff7f50;
+        }
+        .search-container {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+            border: 1px solid #ff7f50;
+            font-size: 16px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .character-button {
+            background-color: #ff7f50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .character-button:hover {
+            background-color: #ff5733;
+        }
+        .character-info {
+            margin-top: 30px;
+            background-color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+        .character-info img {
+            width: 100px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+        }
+        .character-info h2 {
+            color: #ff7f50;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .character-info p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Naruto Characters</h1>
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a character..." onkeyup="searchCharacters()">
+    </div>
+    <div class="button-container" id="button-container">
+        <!-- Character buttons go here -->
+        <button class="character-button" onclick="displayCharacter('Naruto Uzumaki')">Naruto Uzumaki</button>
+        <button class="character-button" onclick="displayCharacter('Sasuke Uchiha')">Sasuke Uchiha</button>
+        <button class="character-button" onclick="displayCharacter('Sakura Haruno')">Sakura Haruno</button>
+        <button class="character-button" onclick="displayCharacter('Kakashi Hatake')">Kakashi Hatake</button>
+        <button class="character-button" onclick="displayCharacter('Madara Uchiha')">Madara Uchiha</button>
+    </div>
+    <div class="character-info" id="character-info">
+        <p>Select a character to see more information.</p>
+    </div>
+
+    <script>
+        const characters = {
+            "Naruto Uzumaki": {
+                img: "naruto.jpg",
+                name: "Naruto Uzumaki",
+                description: "The protagonist of the series, a young ninja with dreams of becoming Hokage.",
+                abilities: "Shadow Clone Jutsu, Rasengan, Sage Mode, Nine-Tails Chakra Mode",
+                backstory: "Naruto was orphaned at birth when his parents sacrificed themselves to protect the village from the Nine-Tails. Despite his challenging upbringing, he has an unwavering spirit and a dream of becoming Hokage.",
+                relationships: "Naruto has strong bonds with his friends and teammates, particularly Sasuke, Sakura, and Kakashi, and later marries Hinata Hyuga.",
+                key_events: "Saving the village from Pain, defeating Kaguya, becoming Hokage."
+            },
+            "Sasuke Uchiha": {
+                img: "sasuke.jpg",
+                name: "Sasuke Uchiha",
+                description: "Naruto's rival and a powerful ninja from the Uchiha clan, driven by revenge and later redemption.",
+                abilities: "Sharingan, Chidori, Susano'o, Rinnegan",
+                backstory: "Sasuke's entire clan was killed by his older brother, Itachi. Driven by revenge, he initially pursues power at any cost but later seeks redemption.",
+                relationships: "Strong connections to Team 7, especially Naruto and Sakura, and later becomes a protector of the village.",
+                key_events: "Battling Naruto at the Valley of the End, defeating Itachi, fighting Kaguya alongside Naruto."
+            },
+            "Sakura Haruno": {
+                img: "sakura.jpg",
+                name: "Sakura Haruno",
+                description: "A skilled medical ninja and one of Naruto's original teammates.",
+                abilities: "Medical Ninjutsu, Superhuman Strength, Chakra Control",
+                backstory: "Initially insecure, Sakura grows into a strong and independent warrior, largely influenced by her training with Tsunade.",
+                relationships: "Close bond with Naruto and Sasuke, eventually marries Sasuke and becomes a mother.",
+                key_events: "Training under Tsunade, assisting in the fight against Kaguya, founding medical units for the ninja world."
+            },
+            "Kakashi Hatake": {
+                img: "kakashi.jpg",
+                name: "Kakashi Hatake",
+                description: "Known as the Copy Ninja, a highly skilled Jonin and mentor to Team 7.",
+                abilities: "Sharingan, Lightning Blade, extensive Ninjutsu knowledge",
+                backstory: "Kakashi lost his father at a young age and his friend Obito during a mission, which shaped his sense of duty and honor.",
+                relationships: "Serves as a mentor to Naruto, Sasuke, and Sakura, and forms a deep bond with them.",
+                key_events: "Teaching Team 7, fighting Kaguya, serving as the Sixth Hokage."
+            },
+            "Madara Uchiha": {
+                img: "madara.jpg",
+                name: "Madara Uchiha",
+                description: "A legendary leader of the Uchiha clan and co-founder of the Hidden Leaf Village.",
+                abilities: "Sharingan, Rinnegan, Wood Style, Susano'o",
+                backstory: "Madara's life is defined by his dream of peace, although his methods lead him down a dark path. He aims to create a world under Infinite Tsukuyomi.",
+                relationships: "Fierce rivalry with Hashirama Senju, co-founder of Konoha, views Sasuke as a successor.",
+                key_events: "Founding the Leaf Village, the Fourth Great Ninja War, awakening the Rinnegan."
+            }
+        };
+
+        function displayCharacter(characterName) {
+            const character = characters[characterName];
+            const characterInfoDiv = document.getElementById("character-info");
+
+            if (character) {
+                characterInfoDiv.innerHTML = `
+                    <img src="${character.img}" alt="${character.name}">
+                    <h2>${character.name}</h2>
+                    <p><strong>Description:</strong> ${character.description}</p>
+                    <p><strong>Abilities:</strong> ${character.abilities}</p>
+                    <p><strong>Backstory:</strong> ${character.backstory}</p>
+                    <p><strong>Relationships:</strong> ${character.relationships}</p>
+                    <p><strong>Key Events:</strong> ${character.key_events}</p>
+                `;
+            }
+        }
+
+        function searchCharacters() {
+            let input = document.getElementById("search-bar").value.toLowerCase();
+            let buttons = document.getElementsByClassName("character-button");
+
+            for (let i = 0; i < buttons.length; i++) {
+                let characterName = buttons[i].textContent.toLowerCase();
+                if (characterName.includes(input)) {
+                    buttons[i].style.display = "inline-block";
+                } else {
+                    buttons[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+
+
